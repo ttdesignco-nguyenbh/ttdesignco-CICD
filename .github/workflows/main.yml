@@ -1,22 +1,37 @@
-#name: Node.js CI
+name: Build and Deploy
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+
+  env:
+    applicationfolder: ttdesignco-cicd
+    AWS_REGION: ap-northeast-1
+    S3BUCKET: ttd-develop
 
 jobs:
   build:
-
+    name: Build 
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
+        matrix:
+          node-version: [12.x, 14.x, 16.x]
 
     steps:
       - uses: actions/checkout@v3
+        name: Checkout Repository     
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
+        
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -24,3 +39,30 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+
+      - NAME: chomod
+        run: chmod -R +x ./.github
+      
+      -name: Upload Artifact to S3
+       working-directory: ${{ env.applicationfolder }}/target
+       run: aws s3 cp */build s3://${{ env.S3BUCKET }}/
+    
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: Dev
+    permissions:
+      id-token: write
+      contents: read
+  steps:
+    - uses: actions/checkout@v2
+    - uses: aws-actions/configure-aws-credentials@v1
+      with: 
+        role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+        role-session-name: GitHub-Action-Role
+        aws-region: ${{ env.AWS_REGION }}
+    -run: |
+        echo "Deploying branch ${{ env.GITHUB_REF }} to ${{ github.event.inputs.environment }}"
+        commit_hash= `git rev-parse HEAD`
+        aws deploy create-deploy --application-name CodeDeployAppNameWithASG --deployment-group-name CodeDeployGroupName --github-location repository=$GITHUB_REPOSITORY, commitId=$commit_hash --ignore-application-stop-failures
+
