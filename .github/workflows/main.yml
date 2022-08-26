@@ -24,6 +24,5 @@ jobs:
     - run: npm ci  #npm clean and npm install
     - run: npm test
     - run: npm run build
-    - run: mv /home/ec2-user/TTD/TTD/ttdesignco-cicd/ttdesignco-cicd/build/* /usr/share/nginx/html/
-  # deploy:
-  #   runs-on:
+
+           
