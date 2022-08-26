@@ -2,8 +2,8 @@
 set -xe
 
 # Delete the old directory as needed
-if [ -d /home/ec2-user/ttdesignco-cicd ]; then
-    rm -rf /home/ec2-user/ttdesignco-cicd/
+if [ -d /usr/share/nginx/html/ ]; then
+    rm -rf /usr/share/nginx/html/
 fi
 
-mkdir -vp /home/ec2-user/ttdesignco-cicd
+mkdir -vp /usr/share/nginx/html/
