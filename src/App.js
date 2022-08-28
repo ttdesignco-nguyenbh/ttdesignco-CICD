@@ -1,7 +1,10 @@
+import './App.css';
+import PageWrapper from './component/layout';
+
 function App() {
   return (
     <div className="App">
-          bui hoang nguyen
+      <PageWrapper />
     </div>
   );
 }

@@ -25,4 +25,23 @@ jobs:
     # - run: npm test
     - run: npm run build
 
+    - name: stop nginx
+    - run: |
+        chmod +x ./aws/scripts/application-stop.sh
+      shell: bash  
+
+    - name: before install new code
+    - run: |
+        chmod +x ./aws/scripts/before-install.sh
+      shell: bash  
+
+    - name: after install
+    - run: |
+        chmod +x ./aws/scripts/after-install.sh
+      shell: bash 
+
+     - name: after install
+    - run: |
+        chmod +x ./aws/scripts/after-install.sh
+      shell: bash    
            
