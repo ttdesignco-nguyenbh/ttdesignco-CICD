@@ -27,22 +27,25 @@ jobs:
     - run: npm ci
     - run: CI=false npm run build
     
-    - uses: actions/server@main
+    - uses: actions/server@stop-nginx
     - name: stop nginx
     - run: |
         chmod +x ./aws/scripts/application-stop.sh
-      shell: bash  
-
+      shell: bash 
+      
+    - uses: actions/server@before-install
     - name: before install new code
     - run: |
         chmod +x ./aws/scripts/before-install.sh
       shell: bash  
-
+    
+    - uses: actions/server@install
     - name: after install
     - run: |
         chmod +x ./aws/scripts/after-install.sh
       shell: bash 
-
+   
+    - uses: actions/server@after-install
     - name: after install
     - run: |
         chmod +x ./aws/scripts/after-install.sh
