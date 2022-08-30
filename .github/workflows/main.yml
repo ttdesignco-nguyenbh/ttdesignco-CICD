@@ -27,6 +27,7 @@ jobs:
     - run: npm ci
     - run: CI=false npm run build
     
+    - uses: actions/server@main
     - name: stop nginx
     - run: |
         chmod +x ./aws/scripts/application-stop.sh
