@@ -1,8 +1,10 @@
 # Use small Alpine Linux image
 FROM node:16-alpine AS builder
 WORKDIR /app
-COPY . /app
-RUN yarn install && run build
+COPY package*.json ./
+RUN yarn install
+COPY . ./
+RUN yarn run build
 
 FROM nginx:1.23.1-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
