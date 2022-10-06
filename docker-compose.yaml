@@ -2,6 +2,6 @@
 version: "3.8"
 services:
   webapp:
-    image: anh13295/react-docker:latest
+    image: anh13295/ttd-docker:latest
     ports:
       - "80:80"
