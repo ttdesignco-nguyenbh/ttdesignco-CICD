@@ -1,10 +1,9 @@
 import './App.css';
-import PageWrapper from './component/layout';
 
 function App() {
   return (
     <div className="App">
-      <PageWrapper />
+      <h1> test</h1>
     </div>
   );
 }
