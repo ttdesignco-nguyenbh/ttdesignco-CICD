@@ -32,7 +32,7 @@ jobs:
       # Please add $SSH_KEY_FINGERPRINT, $DEPLOYED_USER@ and DEPLOYED_SERVER to project's environment
       - add_ssh_keys:
           fingerprints:
-            - $EC2_SSH_KEY
+            - "2d:ad:14:a3:8c:df:5e:5a:61:9a:9a:6a:ed:19:97:a6"
       - run: ssh -oStrictHostKeyChecking=no $EC2_SSH_USER@$EC2_SSH_HOST './deploy.sh'
 
 workflows:
